@@ -1,6 +1,14 @@
 package main
 
+import (
+	"fmt"
+	"yap-backend/app"
+)
+
 func main() {
-	a := App{}
-	a.Run("localhost:8010")
+	dbconn := app.GetConnection()
+	dbconn.AutoMigrate(&app.User{})
+	dbconn.AutoMigrate((&app.AuthCred{}))
+	fmt.Println("database connection established")
+
 }
