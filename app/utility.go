@@ -2,7 +2,6 @@ package app
 
 import (
 	"fmt"
-	"net/http"
 	"os"
 	"time"
 
@@ -15,16 +14,18 @@ const (
 	host     = "localhost"
 	port     = 5432
 	user     = "postgres"
-	password = "postgres"
+	password = "Uniqueharman10022020#"
 	dbname   = "yap"
 )
 
-type ErrorCodes struct {
-	500: 
-}
-
 func GetConnection() *gorm.DB {
-	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", host, port, user, password, dbname)
+	psqlInfo := fmt.Sprintf(
+		"host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
+		host,
+		port,
+		user,
+		password,
+		dbname)
 	db, err := gorm.Open(postgres.Open(psqlInfo), &gorm.Config{})
 
 	if err != nil {
@@ -44,8 +45,4 @@ func CreateJWTToken(email string) (string, error) {
 		return "", err
 	}
 	return token, nil
-}
-
-func ReturnHTTPErrorResponse(w http.ResponseWriter, errorCode int){
-
 }
