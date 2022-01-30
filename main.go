@@ -1,14 +1,11 @@
 package main
 
 import (
-	"fmt"
+	"net/http"
 	"yap-backend/app"
 )
 
 func main() {
-	dbconn := app.GetConnection()
-	dbconn.AutoMigrate(&app.User{})
-	dbconn.AutoMigrate((&app.AuthCred{}))
-	fmt.Println("database connection established")
-
+	router := app.GetRouter()
+	http.ListenAndServe(":8000", router)
 }
