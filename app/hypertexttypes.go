@@ -1,5 +1,7 @@
 package app
 
+import "time"
+
 type SignupRequest struct {
 	Name     string `json:"name"`
 	Email    string `json:"email"`
@@ -17,4 +19,11 @@ type LoginRequest struct {
 
 type LoginResponse struct {
 	JWTToken string `json:"jwtToken"`
+}
+
+type TaskRequest struct {
+	Title  string    `json:"title"`
+	Due    time.Time `json:"due"`
+	Color  string    `json:"color"`
+	Status string    `json:"status"`
 }
