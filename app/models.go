@@ -2,17 +2,18 @@ package app
 
 import (
 	"time"
+
+	"gorm.io/gorm"
 )
 
 var dbconn = GetConnection()
 
 type User struct {
-	Name         string    `gorm:"type:varchar(128);" json:"name"`
-	Email        string    `gorm:"primaryKey;type:varchar(128);" json:"email"`
-	PasswordHash string    `gorm:"type:varchar(256);" json:"passwordHash"`
-	Type         string    `gorm:"type:varchar(64);" json:"type"`
-	CreatedAt    time.Time `gorm:"type:timestamp;autoCreateTime:nano;" json:"createdAt"`
-	ModifiedAt   time.Time `gorm:"type:timestamp;autoCreateTime:nano;" json:"modifiedAt"`
+	gorm.Model
+	Name         string `gorm:"type:varchar(128);" json:"name"`
+	Email        string `gorm:"primaryKey;type:varchar(128);" json:"email"`
+	PasswordHash string `gorm:"type:varchar(256);" json:"passwordHash"`
+	Type         string `gorm:"type:varchar(64);" json:"type"`
 }
 
 func (user User) create() error {
@@ -26,13 +27,11 @@ func (user User) getUser(email string) (User, error) {
 }
 
 type Task struct {
-	Title      string    `gorm:"type:varchar(256)" json:"title"`
-	UserEmail  string    `gorm:"type:varchar(128)" json:"userEmail"`
-	Due        time.Time `gorm:"type:timestamp;" json:"due"`
-	Color      string    `gorm:"type:varchar(16);" json:"color"`
-	Status     string    `gorm:"type:varchar(24);" json:"status"`
-	CreatedAt  time.Time `gorm:"type:timestamp;" json:"createdAt"`
-	ModifiedAt time.Time `gorm:"type:timestamp;" json:"modifiedAt"`
+	Title  string    `gorm:"type:varchar(256)" json:"title"`
+	UserID int       `gorm:"type:int64" json:"userId"`
+	Due    time.Time `gorm:"type:timestamp;" json:"due"`
+	Color  string    `gorm:"type:varchar(16);" json:"color"`
+	Status string    `gorm:"type:varchar(24);" json:"status"`
 }
 
 func (task Task) create() error {
