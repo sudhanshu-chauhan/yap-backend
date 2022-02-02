@@ -18,6 +18,11 @@ const (
 	dbname   = "yap"
 )
 
+type CustomClaim struct {
+	jwt.Claims
+	Email string
+}
+
 func GetConnection() *gorm.DB {
 	psqlInfo := fmt.Sprintf(
 		"host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
@@ -45,4 +50,23 @@ func CreateJWTToken(email string) (string, error) {
 		return "", err
 	}
 	return token, nil
+}
+
+func DecodeJWTToken(tokenString string) (jwt.Claims, error) {
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		_, ok := token.Method.(*jwt.SigningMethodHMAC)
+		if !ok {
+			return nil, fmt.Errorf("unexpected signing method %v", token.Header["alg"])
+		}
+		return []byte(os.Getenv("JWT_SECRET")), nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	claimsMap, ok := token.Claims.(jwt.MapClaims)
+	if !ok && !token.Valid {
+		return nil, fmt.Errorf("invalid token")
+	}
+
+	return claimsMap, nil
 }
