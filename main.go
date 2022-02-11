@@ -9,4 +9,5 @@ func main() {
 
 	router := app.GetRouter()
 	http.ListenAndServe(":8000", router)
+
 }
