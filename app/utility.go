@@ -3,6 +3,7 @@ package app
 import (
 	"fmt"
 	"os"
+	"time"
 
 	"github.com/dgrijalva/jwt-go"
 	"gorm.io/driver/postgres"
@@ -42,7 +43,7 @@ func CreateJWTToken(email string) (string, error) {
 	claims := CustomClaim{
 		email,
 		jwt.StandardClaims{
-			ExpiresAt: 15000,
+			ExpiresAt: time.Now().Add(time.Hour * 720).Unix(),
 			Issuer:    "YAP",
 		},
 	}

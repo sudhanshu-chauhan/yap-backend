@@ -27,3 +27,11 @@ type TaskRequest struct {
 	Color  string    `json:"color"`
 	Status string    `json:"status"`
 }
+
+type TaskResponse struct {
+	Title  string    `json:"title"`
+	Due    time.Time `json:"due"`
+	Color  string    `json:"color"`
+	Status string    `json:"status"`
+	UserID int       `json:"userID"`
+}

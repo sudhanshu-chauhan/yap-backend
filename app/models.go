@@ -28,7 +28,7 @@ func (user User) getUser(email string) (User, error) {
 
 type Task struct {
 	Title  string    `gorm:"type:varchar(256)" json:"title"`
-	UserID int       `gorm:"type:int64" json:"userId"`
+	UserID int       `gorm:"type:bigint" json:"userId"`
 	Due    time.Time `gorm:"type:timestamp;" json:"due"`
 	Color  string    `gorm:"type:varchar(16);" json:"color"`
 	Status string    `gorm:"type:varchar(24);" json:"status"`
