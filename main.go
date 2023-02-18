@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-
+	app.MigrateTables()
 	router := app.GetRouter()
 	http.ListenAndServe(":8000", router)
 
