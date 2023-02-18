@@ -5,27 +5,38 @@ import (
 	"os"
 	"time"
 
+	"github.com/BurntSushi/toml"
 	"github.com/dgrijalva/jwt-go"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
-const (
-	host     = "localhost"
-	port     = 5432
-	user     = "postgres"
-	password = "Uniqueharman10022020#"
-	dbname   = "yap"
-)
+type Config struct {
+	DB_HOST   string
+	DB_PORT   int
+	DB_USER   string
+	DB_PASSWD string
+	DB_NAME   string
+}
+
+func readConfig(path string) (Config, error) {
+	var config Config
+	_, err := toml.DecodeFile(path, &config)
+	return config, err
+}
 
 func GetConnection() *gorm.DB {
+	config, configReadErr := readConfig("config.toml")
+	if configReadErr != nil {
+		panic("unable to read the config file")
+	}
 	psqlInfo := fmt.Sprintf(
 		"host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
-		host,
-		port,
-		user,
-		password,
-		dbname)
+		config.DB_HOST,
+		config.DB_PORT,
+		config.DB_USER,
+		config.DB_PASSWD,
+		config.DB_NAME)
 	db, err := gorm.Open(postgres.Open(psqlInfo), &gorm.Config{})
 
 	if err != nil {
