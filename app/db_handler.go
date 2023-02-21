@@ -16,3 +16,8 @@ func ResetPassword(email string, password string) bool {
 	db.Model(&user).Update("password_hash", passwordHash)
 	return true
 }
+
+func GetTasks(userId int, tasks *[]Task) {
+	db := GetConnection()
+	db.Where("user_id = ?", userId).Find(&tasks)
+}

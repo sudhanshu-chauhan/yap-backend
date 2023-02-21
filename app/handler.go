@@ -136,3 +136,27 @@ func CreateTask(w http.ResponseWriter, r *http.Request) {
 	w.Write(res)
 
 }
+
+func ListTask(w http.ResponseWriter, r *http.Request) {
+	token := r.Header.Get("Authorization")
+	email, err := DecodeJWTToken(token)
+	if err != nil {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+	currentUser, getUserErr := User{}.getUser(email)
+	if getUserErr != nil {
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
+	}
+	var tasks []Task
+	GetTasks(int(currentUser.ID), &tasks)
+	res, marshalError := json.Marshal(tasks)
+	if marshalError != nil {
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write(res)
+}
